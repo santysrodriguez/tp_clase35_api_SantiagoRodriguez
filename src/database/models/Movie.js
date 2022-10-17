@@ -11,7 +11,15 @@ module.exports = (sequelize, dataTypes) => {
         // updated_at: dataTypes.TIMESTAMP,
         title: {
             type: dataTypes.STRING(500),
-            allowNull: false
+            allowNull: false,
+            validate :{
+                notNull:{
+                    msg: 'el campo title no puede ser nulo'
+                },
+                notEmpty:{
+                    msg:'el titulo de la pelicula es requerido'
+                }
+            }
         },
         rating: {
             type: dataTypes.DECIMAL(3, 1).UNSIGNED,

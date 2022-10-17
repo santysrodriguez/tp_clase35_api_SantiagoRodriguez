@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const genresController = require('../controllers/genresController');
+const {list,nombre,detail} = require('../controllers/genresController')
 
-router.get('/genres', genresController.list);
-router.get('/genres/:id', genresController.detail);//  detalle
+/* /genres */
+router.get('/',list);
+router.get('/name/:name?', nombre)
+router.get('/:id',detail);//  detalle
 
 
 module.exports = router;

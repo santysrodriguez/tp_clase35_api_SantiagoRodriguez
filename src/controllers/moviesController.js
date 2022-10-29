@@ -185,9 +185,8 @@ const moviesController = {
     
     create: async (req,res) =>{
         const{title, rating,awards,release_date,length,genre_id}= req.body;
-        let errors =[];
         try {
-            for (const key in req.body) {
+            /* for (const key in req.body) {
                 if(!req.body[key]){
                     errors =[
                         ...errors,
@@ -197,10 +196,7 @@ const moviesController = {
                         }
                     ]
                 }
-            }
-            if(errors.length){
-                throw createError(400,'ups, hay errores');
-            }
+            } */
 
 
             const movie = await db.Movie.create({
@@ -223,39 +219,90 @@ const moviesController = {
             }); 
         } catch (error) {
             console.log(error);
-            return res.status(error.status || 500).json({
+            const showErrors = error.errors.map(error =>{
+                return{
+                    path:error.path,
+                    message :error.message
+                }
+            })
+             return res.status(error.status || 500).json({
                 ok:false,
                 status : error.status || 500,
-                msg:error.message,
+                msg:showErrors
             });
         }
     },
-    update: function (req,res) {
-        let movieId = req.params.id;
-        Movies
-        .update(
+    update: async (req,res) => {
+        const{title, rating,awards,release_date,length,genre_id}= req.body;
+        try {
+            let movieId = req.params.id;
+        let movie = await db.Movie.update(
             {
-                title: req.body.title,
-                rating: req.body.rating,
-                awards: req.body.awards,
-                release_date: req.body.release_date,
-                length: req.body.length,
-                genre_id: req.body.genre_id
+                title: title?.trim(),
+                rating: rating,
+                awards: awards,
+                release_date: release_date,
+                length: length,
+                genre_id: genre_id
             },
             {
                 where: {id: movieId}
             })
-        .then(()=> {
-            return res.redirect('/movies')})            
-        .catch(error => res.send(error))
+            return res.status(201).json({
+                ok :true,
+                meta :{
+                    status: 200
+                },
+                msg:'Pelicula actualizada con exito'
+            }); 
+        } catch (error) {
+            return res.status(error.status || 500).json({
+                ok:false,
+                status : error.status || 500,
+                msg:showErrors
+            });
+        }
     },
-    destroy: function (req,res) {
-        let movieId = req.params.id;
-        Movies
-        .destroy({where: {id: movieId}, force: true}) // force: true es para asegurar que se ejecute la acción
-        .then(()=>{
-            return res.redirect('/movies')})
-        .catch(error => res.send(error)) 
+    destroy: async (req,res) =>{
+        try {
+            let movieId = req.params.id;
+
+            /* await db.Actor.update({
+                favorite_movie_id :null
+            },
+            {
+                where :{
+                    favorite_movie_id :movieId
+                }
+            })
+            await db.ActorMovie.destroy({
+                where :{
+                    movie_id : movieId
+                }
+            }) */
+
+           await db.Movie.destroy({
+            where: {
+                id: movieId
+            },
+            force: true
+        })
+        return res.status(201).json({
+            ok :true,
+            meta :{
+                status: 201
+            },
+            msg:'pelicula eliminada con existo'
+        });  
+        } catch (error) {
+            console.log(error)
+            return res.status(error.status || 500).json({
+                ok:false,
+                status : error.status || 500,
+                message : error.message || 'upss, error'
+            });
+        }
+        
     }
 }
 

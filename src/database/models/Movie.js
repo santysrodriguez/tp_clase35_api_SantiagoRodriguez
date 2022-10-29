@@ -1,5 +1,5 @@
 const moment = require('moment');
-const{objetValidate,defaultValidations} = require('../resources');
+const{objetcValidate,defaultValidations} = require('../resources');
 const fecha = new Date()
 
 module.exports = (sequelize, dataTypes) => {

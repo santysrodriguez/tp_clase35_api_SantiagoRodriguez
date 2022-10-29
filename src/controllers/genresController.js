@@ -8,9 +8,9 @@ module.exports= {
     let {limit, order} = req.query
     let fields = ['name','ranking']
     try {
-          if(!fields.includes(order)){
+            if(!fields.includes(order)){
             throw createError(400,"Solo se puede ordenar por los campos 'name' o 'ranking' " );
-          }
+          } 
       
       let total = await db.Genre.count()
         let genres = await db.Genre.findAll({

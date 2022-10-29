@@ -1,14 +1,14 @@
-const objetValidate = (args,msg) =>({
+const objetcValidate = (args,msg) =>({
         args,
         msg
     })
 
-const defaultValidations =(field) =>({
-    notNull:objetValidate(true,'el campo title no puede ser nulo'),
-    notEmpty:objetValidate(true, 'el titulo de la pelicula es requerido')
-})
+const defaultValidations ={
+    notNull:objetcValidate(true,'No puede ser nulo'),
+    notEmpty:objetcValidate(true, 'El valor es requerido')
+}
 
 module.exports = {
-    objetValidate,
+    objetcValidate,
     defaultValidations
 }

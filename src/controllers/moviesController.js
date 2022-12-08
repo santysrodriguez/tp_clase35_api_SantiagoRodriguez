@@ -34,7 +34,7 @@ const moviesController = {
                         exclude :['created_at','updated_at']
                     }
                 }],
-                limit : limit ? +limit :5,
+                limit : limit ? +limit :5,  
                 offset: offset ? +offset :0,
                 order :[order ? order : 'id']
             });
